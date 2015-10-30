@@ -25,12 +25,15 @@ public class BatchIndicoResult {
     @SuppressWarnings("unchecked")
     public BatchIndicoResult(Api api, Map<String, ?> response) throws IndicoException {
         this.results = new HashMap<>();
-        if (api != Api.MultiImage && api != Api.MultiText)
+        if (!response.containsKey("results")) {
+            throw new IndicoException(api + " failed with error " +
+                (response.containsKey("error") ? response.get("error") : "unexpected error")
+            );
+        }
+
+        if (api != Api.MultiImage && api != Api.MultiText) {
             results.put(api, response.get("results"));
-        else {
-            if (response.containsKey("error")) {
-                throw new IndicoException(api + " failed with error " + response.get("error"));
-            }
+        } else {
             Map<String, ?> responses = (Map<String, ?>) response.get("results");
             for (Api res : Api.values()) {
                 if (!responses.containsKey(res.toString()))

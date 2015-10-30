@@ -26,6 +26,12 @@ public class IndicoResult {
     @SuppressWarnings("unchecked")
     public IndicoResult(Api api, Map<String, ?> response) throws IndicoException {
         this.results = new HashMap<>();
+        if (!response.containsKey("results")) {
+            throw new IndicoException(api + " failed with error " +
+                (response.containsKey("error") ? response.get("error") : "unexpected error")
+            );
+        }
+        
         if (api.type != ApiType.Multi)
             results.put(api, response.get("results"));
         else {

@@ -3,6 +3,7 @@ package io.indico.api;
 import com.google.gson.Gson;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.indico.api.results.BatchIndicoResult;
 import io.indico.api.results.IndicoResult;
@@ -40,73 +43,42 @@ public class ApiClient {
     IndicoResult call(Api api, String data, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
 
-        Map<String, ?> apiResponse = baseCall(api, data, extraParams);
+        Map<String, ?> apiResponse = baseCall(api, data, false, extraParams);
         return new IndicoResult(api, apiResponse);
     }
 
+    @SuppressWarnings("unchecked")
     BatchIndicoResult call(Api api, Map<String, Object> data, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
-        Map<String, List<?>> apiResponse = baseCall(api, data, extraParams);
+        Map<String, List<?>> apiResponse = (Map<String, List<?>>) baseCall(api, data, true, extraParams);
         return new BatchIndicoResult(api, apiResponse);
     }
 
+    @SuppressWarnings("unchecked")
     BatchIndicoResult call(Api api, List<String> data, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
 
-        Map<String, List<?>> apiResponse = baseCall(api, data, extraParams);
+        Map<String, List<?>> apiResponse = (Map<String, List<?>>) baseCall(api, data, true, extraParams);
         return new BatchIndicoResult(api, apiResponse);
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, ?> baseCall(Api api, String data, Map<String, Object> extraParams)
+    private Map<String, ?> baseCall(Api api, Object data, boolean batch, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
-        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, false));
-        HttpEntity entity = response.getEntity();
-
-        @SuppressWarnings("rawtypes")
-        Map<String, ?> apiResponse = new HashMap();
-        if (entity != null) {
-            InputStream responseStream = entity.getContent();
-            try {
-                String responseString = IOUtils.toString(responseStream, "UTF-8");
-                apiResponse = new Gson().fromJson(responseString, Map.class);
-                if (apiResponse.containsKey("error")) {
-                    throw new IndicoException((String) apiResponse.get("error"));
-                }
-            } finally {
-                responseStream.close();
-            }
-        }
-        return apiResponse;
-
+        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, batch));
+        return handleResponse(response);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, List<?>> baseCall(Api api, List<String> data, Map<String, Object> extraParams)
-        throws IOException, IndicoException {
-        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, true));
+    private Map<String, ?> handleResponse(HttpResponse response) throws IOException {
         HttpEntity entity = response.getEntity();
 
-        Map<String, List<?>> apiResponse = new HashMap<>();
-        if (entity != null) {
-            InputStream responseStream = entity.getContent();
-            Reader reader = new InputStreamReader(responseStream, "UTF-8");
-            try {
-                apiResponse = new Gson().fromJson(reader, Map.class);
-            } finally {
-                responseStream.close();
-            }
+        Header warning = response.getFirstHeader("X-Warning");
+
+        if (warning != null && warning.getValue() != null) {
+            Logger.getLogger("indico").log(Level.WARNING, warning.getValue());
         }
-        return apiResponse;
-    }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, List<?>> baseCall(Api api, Map<String, Object> data, Map<String, Object> extraParams)
-        throws IOException, IndicoException {
-        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, true));
-        HttpEntity entity = response.getEntity();
-
-        Map<String, List<?>> apiResponse = new HashMap<>();
+        Map<String, ?> apiResponse = new HashMap<>();
         if (entity != null) {
             InputStream responseStream = entity.getContent();
             Reader reader = new InputStreamReader(responseStream, "UTF-8");

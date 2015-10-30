@@ -29,7 +29,6 @@ import io.indico.api.text.Category;
 import io.indico.api.text.Language;
 import io.indico.api.text.PoliticalClass;
 import io.indico.api.text.TextTag;
-import io.indico.api.utils.ImageUtils;
 import io.indico.api.utils.IndicoException;
 
 import static io.indico.api.utils.ImageUtils.resize;
