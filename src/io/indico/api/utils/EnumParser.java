@@ -18,7 +18,7 @@ public class EnumParser {
 
         Map<T, Double> mappedResponse = new HashMap<>();
         for (Map.Entry<String, Double> entry : apiResponse.entrySet()) {
-            mappedResponse.put(Enum.valueOf(enumClass, entry.getKey()), entry.getValue());
+            mappedResponse.put(Enum.valueOf(enumClass, titleCase(entry.getKey())), entry.getValue());
         }
         return mappedResponse;
     }
@@ -31,4 +31,7 @@ public class EnumParser {
         return cleanedResponse;
     }
 
+    public static String titleCase(String realName) {
+        return realName.substring(0, 1).toUpperCase() + realName.substring(1).toLowerCase();
+    }
 }
