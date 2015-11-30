@@ -18,6 +18,7 @@ public enum Api {
     NamedEntities(ApiType.Text, "namedentities"),
     Keywords(ApiType.Text, "keywords"),
     TwitterEngagement(ApiType.Text, "twitterengagement"),
+    Personality(ApiType.Text, "personality"),
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),

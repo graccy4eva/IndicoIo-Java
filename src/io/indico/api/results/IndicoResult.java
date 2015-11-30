@@ -11,6 +11,7 @@ import io.indico.api.ApiType;
 import io.indico.api.image.FacialEmotion;
 import io.indico.api.text.Category;
 import io.indico.api.text.Language;
+import io.indico.api.text.Personality;
 import io.indico.api.text.PoliticalClass;
 import io.indico.api.text.TextTag;
 import io.indico.api.utils.EnumParser;
@@ -147,6 +148,12 @@ public class IndicoResult {
 
         return rectangles;
     }
+
+    @SuppressWarnings("unchecked")
+    public Map<Personality, Double> getPersonality() throws IndicoException {
+        return EnumParser.parse(Personality.class, (Map<String, Double>) get(Api.Personality));
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Map<String, Map<String, Map<String, Double>>>> getIntersections() throws IndicoException {
