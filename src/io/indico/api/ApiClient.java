@@ -64,6 +64,9 @@ public class ApiClient {
 
     private Map<String, ?> baseCall(Api api, Object data, boolean batch, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
+        if (extraParams!= null && !extraParams.containsKey("version")) {
+            extraParams.put("version", api.get("version") == null ? "1" : api.get("version"));
+        }
         HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, batch));
         return handleResponse(response);
     }
