@@ -29,6 +29,9 @@ public enum Api {
     ContentFiltering(ApiType.Image, "contentfiltering", "size", 128, "minResize", true),
     FacialLocalization(ApiType.Image, "faciallocalization", "size", -1, "minResize", false),
 
+    //CUSTOM APIS
+    CUSTOM(ApiType.Custom, "custom", "size", 144, "minResize", true),
+
     // MULTI APIS
     Intersections(ApiType.Multi, "intersections", "type", ApiType.Text),
     MultiText(ApiType.Multi, "multiapi", "type", ApiType.Text),

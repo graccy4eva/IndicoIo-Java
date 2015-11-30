@@ -54,21 +54,26 @@ public class ImageUtils {
         return new Rectangle((left + right) / 2, (top + bottom) / 2, right - left, top - bottom);
     }
 
-    public static List<String> convertToImage(List<?> images, int size, boolean minAxis)
+    public static String convertToImage(Object image, int size, boolean minAxis)
+        throws IOException {
+        if (image instanceof File) {
+            return handleFile((File) image, size, minAxis);
+        } else if (image instanceof String) {
+            return handleString((String) image, size, minAxis);
+        } else if (image instanceof BufferedImage) {
+            return handleImage((BufferedImage) image, size, minAxis);
+        } else {
+            throw new IllegalArgumentException(
+                "imageCall method only supports lists of Files and lists of Strings"
+            );
+        }
+    }
+
+    public static List<String> convertToImages(List<?> images, int size, boolean minAxis)
         throws IOException {
         List<String> convertedInput = new ArrayList<>();
         for (Object entry : images) {
-            if (entry instanceof File) {
-                convertedInput.add(handleFile((File) entry, size, minAxis));
-            } else if (entry instanceof String) {
-                convertedInput.add(handleString((String) entry, size, minAxis));
-            } else if (entry instanceof BufferedImage) {
-                convertedInput.add(handleImage((BufferedImage) entry, size, minAxis));
-            } else {
-                throw new IllegalArgumentException(
-                    "imageCall method only supports lists of Files and lists of Strings"
-                );
-            }
+            convertedInput.add(convertToImage(entry, size, minAxis));
         }
         return convertedInput;
     }
@@ -106,14 +111,14 @@ public class ImageUtils {
                 // Check If Base64
                 boolean isBase64 = base64_regex.matcher(imageString).matches();
                 if (!isBase64) {
-                    throw new IllegalArgumentException("Invalid input image. Only file paths, base64 string, and urls are supported");
+                    return imageString;
+//                    throw new IllegalArgumentException("Invalid input image. Only file paths, base64 string, and urls are supported");
                 }
 
                 image = ImageIO.read(new ByteArrayInputStream(Base64.decodeBase64(imageString)));
+                return handleImage(image, size, minAxis);
             }
         }
-
-        return handleImage(image, size, minAxis);
     }
 
     public static BufferedImage resize(BufferedImage image, int size, boolean minAxis) {

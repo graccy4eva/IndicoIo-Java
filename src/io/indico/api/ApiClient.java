@@ -2,7 +2,6 @@ package io.indico.api;
 
 import com.google.gson.Gson;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,13 +10,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +23,6 @@ import java.util.logging.Logger;
 
 import io.indico.api.results.BatchIndicoResult;
 import io.indico.api.results.IndicoResult;
-import io.indico.api.utils.ImageUtils;
 import io.indico.api.utils.IndicoException;
 
 public class ApiClient {
@@ -62,12 +58,22 @@ public class ApiClient {
         return new BatchIndicoResult(api, apiResponse);
     }
 
-    private Map<String, ?> baseCall(Api api, Object data, boolean batch, Map<String, Object> extraParams)
+    Map<String, ?> baseCall(Api api, Object data, boolean batch, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
         if (extraParams!= null && !extraParams.containsKey("version")) {
             extraParams.put("version", api.get("version") == null ? "1" : api.get("version"));
         }
-        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, batch));
+        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, null, batch));
+        return handleResponse(response);
+    }
+
+
+    Map<String, ?> baseCall(Api api, Object data, boolean batch, String method, Map<String, Object> extraParams)
+        throws UnsupportedOperationException, IOException, IndicoException {
+        if (extraParams!= null && !extraParams.containsKey("version")) {
+            extraParams.put("version", api.get("version") == null ? "1" : api.get("version"));
+        }
+        HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, method, batch));
         return handleResponse(response);
     }
 
@@ -94,13 +100,14 @@ public class ApiClient {
         return apiResponse;
     }
 
-    private HttpPost getBasePost(Api api, Object data, Map<String, Object> extraParams, boolean batch)
+    private HttpPost getBasePost(Api api, Object data, Map<String, Object> extraParams, String method, boolean batch)
         throws UnsupportedEncodingException, IndicoException {
 
         String url = baseUrl
             + (api.type == ApiType.Multi ? "/apis" : "")
             + "/" + api.toString()
             + (batch ? "/batch" : "")
+            + (method != null ? "/" + method : "")
             + "?key=" + apiKey
             + addUrlParams(api, extraParams);
 
@@ -112,7 +119,9 @@ public class ApiClient {
         }
         if (extraParams != null && !extraParams.isEmpty())
             rawParams.putAll(extraParams);
-        rawParams.put("data", data);
+        if (data != null) {
+            rawParams.put("data", data);
+        }
 
         String entity = new Gson().toJson(rawParams);
         StringEntity params = new StringEntity(entity, "utf-8");

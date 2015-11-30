@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class ImageApi extends ApiClient {
 
     public BatchIndicoResult predict(List<?> images, Map<String, Object> params)
         throws UnsupportedOperationException, IOException, IndicoException {
-        return call(api, ImageUtils.convertToImage(images, api.getSize(params), (Boolean) api.get("minResize")), params);
+        return call(api, ImageUtils.convertToImages(images, api.getSize(params), (Boolean) api.get("minResize")), params);
     }
 
     public BatchIndicoResult predict(String[] images, Map<String, Object> params)
@@ -66,7 +65,7 @@ public class ImageApi extends ApiClient {
 
     public BatchIndicoResult predict(List<?> images)
         throws UnsupportedOperationException, IOException, IndicoException {
-        return predict(ImageUtils.convertToImage(images, (Integer) api.get("size"), (Boolean) api.get("minResize")), null);
+        return predict(ImageUtils.convertToImages(images, (Integer) api.get("size"), (Boolean) api.get("minResize")), null);
     }
 
     public BatchIndicoResult predict(String[] images)
