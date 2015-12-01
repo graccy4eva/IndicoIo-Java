@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.indico.Indico;
+import io.indico.api.text.Persona;
 import io.indico.api.text.Personality;
 import io.indico.api.utils.IndicoException;
 
@@ -28,6 +29,15 @@ public class TestPersonality {
         Map<Personality, Double> results = test.personality.predict(testString).getPersonality();
         for (Personality personality: Personality.values()) {
             assertTrue(results.containsKey(personality));
+        }
+    }
+    @Test
+    public void testPersona() throws IOException, IndicoException {
+        Indico test = new Indico(new File("config.properties"));
+
+        Map<Persona, Double> results = test.persona.predict(testString).getPersona();
+        for (Persona persona: Persona.values()) {
+            assertTrue(results.containsKey(persona));
         }
     }
 }

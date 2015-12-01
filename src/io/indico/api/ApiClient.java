@@ -107,6 +107,9 @@ public class ApiClient {
         HttpPost basePost = new HttpPost(url);
 
         Map<String, Object> rawParams = new HashMap<>();
+        if (api == Api.Persona) {
+            rawParams.put("persona", true);
+        }
         if (extraParams != null && !extraParams.isEmpty())
             rawParams.putAll(extraParams);
         rawParams.put("data", data);

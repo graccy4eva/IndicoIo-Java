@@ -10,6 +10,7 @@ import io.indico.api.Api;
 import io.indico.api.image.FacialEmotion;
 import io.indico.api.text.Category;
 import io.indico.api.text.Language;
+import io.indico.api.text.Persona;
 import io.indico.api.text.Personality;
 import io.indico.api.text.PoliticalClass;
 import io.indico.api.text.TextTag;
@@ -171,6 +172,10 @@ public class BatchIndicoResult {
         return EnumParser.parse(Personality.class, (List<Map<String, Double>>) get(Api.Personality));
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Map<Persona, Double>> getPersona() throws IndicoException {
+        return EnumParser.parse(Persona.class, (List<Map<String, Double>>) get(Api.Persona));
+    }
 
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, Map<String, Double>>> getIntersections() throws IndicoException {
