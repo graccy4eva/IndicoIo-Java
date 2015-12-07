@@ -10,6 +10,8 @@ import io.indico.api.Api;
 import io.indico.api.image.FacialEmotion;
 import io.indico.api.text.Category;
 import io.indico.api.text.Language;
+import io.indico.api.text.Persona;
+import io.indico.api.text.Personality;
 import io.indico.api.text.PoliticalClass;
 import io.indico.api.text.TextTag;
 import io.indico.api.utils.EnumParser;
@@ -25,12 +27,15 @@ public class BatchIndicoResult {
     @SuppressWarnings("unchecked")
     public BatchIndicoResult(Api api, Map<String, ?> response) throws IndicoException {
         this.results = new HashMap<>();
-        if (api != Api.MultiImage && api != Api.MultiText)
+        if (!response.containsKey("results")) {
+            throw new IndicoException(api + " failed with error " +
+                (response.containsKey("error") ? response.get("error") : "unexpected error")
+            );
+        }
+
+        if (api != Api.MultiImage && api != Api.MultiText) {
             results.put(api, response.get("results"));
-        else {
-            if (response.containsKey("error")) {
-                throw new IndicoException(api + " failed with error " + response.get("error"));
-            }
+        } else {
             Map<String, ?> responses = (Map<String, ?>) response.get("results");
             for (Api res : Api.values()) {
                 if (!responses.containsKey(res.toString()))
@@ -162,6 +167,15 @@ public class BatchIndicoResult {
         return images;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Map<Personality, Double>> getPersonality() throws IndicoException {
+        return EnumParser.parse(Personality.class, (List<Map<String, Double>>) get(Api.Personality));
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map<Persona, Double>> getPersona() throws IndicoException {
+        return EnumParser.parse(Persona.class, (List<Map<String, Double>>) get(Api.Persona));
+    }
 
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, Map<String, Double>>> getIntersections() throws IndicoException {

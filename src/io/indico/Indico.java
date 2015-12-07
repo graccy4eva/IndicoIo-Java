@@ -9,13 +9,15 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 import io.indico.api.Api;
+import io.indico.api.CustomApiClient;
 import io.indico.api.ImageApi;
 import io.indico.api.TextApi;
 import io.indico.api.utils.IndicoException;
 
 public class Indico {
-    public TextApi sentiment, sentimentHQ, political, language, textTags, keywords, namedEntities, twitterEngagement, intersections, text;
+    public TextApi sentiment, sentimentHQ, political, language, textTags, keywords, namedEntities, twitterEngagement, intersections, personality, persona, text;
     public ImageApi fer, facialFeatures, imageFeatures, imageRecognition, contentFiltering, facialLocalization, image;
+    public CustomApiClient custom;
 
     public String apiKey;
     public String cloud;
@@ -68,6 +70,9 @@ public class Indico {
         this.intersections = new TextApi(Api.Intersections, this.apiKey, this.cloud);
         this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud);
         this.twitterEngagement = new TextApi(Api.TwitterEngagement, this.apiKey, this.cloud);
+        this.personality = new TextApi(Api.Personality, this.apiKey, this.cloud);
+        this.persona = new TextApi(Api.Persona, this.apiKey, this.cloud);
+
 
         this.fer = new ImageApi(Api.FER, this.apiKey, this.cloud);
         this.facialFeatures = new ImageApi(Api.FacialFeatures, this.apiKey, this.cloud);
@@ -76,6 +81,8 @@ public class Indico {
         this.contentFiltering = new ImageApi(Api.ContentFiltering, this.apiKey, this.cloud);
         this.facialLocalization = new ImageApi(Api.FacialLocalization, this.apiKey, this.cloud);
         this.image = new ImageApi(Api.MultiImage, this.apiKey, this.cloud);
+
+        this.custom = new CustomApiClient(this.apiKey, this.cloud);
     }
 
 }
