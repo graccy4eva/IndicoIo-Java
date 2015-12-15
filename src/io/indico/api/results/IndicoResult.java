@@ -160,6 +160,26 @@ public class IndicoResult {
         return EnumParser.parse(Persona.class, (Map<String, Double>) get(Api.Persona));
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> getPeople() throws IndicoException {
+        return (List<Map<String, Object>>) get(Api.People);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> getPlaces() throws IndicoException {
+        return (List<Map<String, Object>>) get(Api.Places);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> getOrganizations() throws IndicoException {
+        return (List<Map<String, Object>>) get(Api.Organizations);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Double> getRelevance() throws IndicoException {
+        return (Map<String, Double>) get(Api.Relevance);
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Map<String, Map<String, Map<String, Double>>>> getIntersections() throws IndicoException {
