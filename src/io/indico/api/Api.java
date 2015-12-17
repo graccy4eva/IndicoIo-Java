@@ -20,6 +20,10 @@ public enum Api {
     TwitterEngagement(ApiType.Text, "twitterengagement"),
     Personality(ApiType.Text, "personality"),
     Persona(ApiType.Text, "personality"),
+    People(ApiType.Text, "people"),
+    Places(ApiType.Text, "places"),
+    Organizations(ApiType.Text, "organizations"),
+    Relevance(ApiType.Text, "relevance"),
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
