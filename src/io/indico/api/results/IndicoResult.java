@@ -176,8 +176,8 @@ public class IndicoResult {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Double> getRelevance() throws IndicoException {
-        return (Map<String, Double>) get(Api.Relevance);
+    public List<Double> getRelevance() throws IndicoException {
+        return (List<Double>) get(Api.Relevance);
     }
 
 

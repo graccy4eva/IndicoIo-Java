@@ -31,7 +31,7 @@ public class TestRelevance {
         Indico test = new Indico(new File("config.properties"));
 
         String example = "president";
-        Map<String, Double> results = test.relevance.predict(example, params).getRelevance();
+        List<Double> results = test.relevance.predict(example, params).getRelevance();
 
         assertEquals(results.size(), 2);
     }
@@ -41,7 +41,7 @@ public class TestRelevance {
         Indico test = new Indico(new File("config.properties"));
 
         final String example = "president";
-        List<Map<String, Double>> results = test.relevance.predict(new String[] {example, example}, params).getRelevance();
+        List<List<Double>> results = test.relevance.predict(new String[] {example, example}, params).getRelevance();
         assertTrue(results.size() == 2);
         assertEquals(results.get(0).size(), 2);
 

@@ -193,8 +193,8 @@ public class BatchIndicoResult {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Map<String, Double>> getRelevance() throws IndicoException {
-        return (List<Map<String, Double>>) get(Api.Relevance);
+    public List<List<Double>> getRelevance() throws IndicoException {
+        return (List<List<Double>>) get(Api.Relevance);
     }
 
     @SuppressWarnings("unchecked")
