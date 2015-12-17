@@ -178,6 +178,26 @@ public class BatchIndicoResult {
     }
 
     @SuppressWarnings("unchecked")
+    public List<List<Map<String, Object>>> getPeople() throws IndicoException {
+        return (List<List<Map<String, Object>>>) get(Api.People);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<List<Map<String, Object>>> getPlaces() throws IndicoException {
+        return (List<List<Map<String, Object>>>) get(Api.Places);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<List<Map<String, Object>>> getOrganizations() throws IndicoException {
+        return (List<List<Map<String, Object>>>) get(Api.Organizations);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<List<Double>> getRelevance() throws IndicoException {
+        return (List<List<Double>>) get(Api.Relevance);
+    }
+
+    @SuppressWarnings("unchecked")
     public Map<String, Map<String, Map<String, Double>>> getIntersections() throws IndicoException {
         return (Map<String, Map<String, Map<String, Double>>>) get(Api.Intersections);
     }
