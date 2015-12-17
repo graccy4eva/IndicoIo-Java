@@ -1,1 +1,7 @@
 io.indico
+io.indico.api
+io.indico.api.custom
+io.indico.api.image
+io.indico.api.results
+io.indico.api.text
+io.indico.api.utils
