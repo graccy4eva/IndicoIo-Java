@@ -198,6 +198,11 @@ public class BatchIndicoResult {
     }
 
     @SuppressWarnings("unchecked")
+    public List<List<Double>> getTextFeatures() throws IndicoException {
+        return (List<List<Double>>) get(Api.TextFeatures);
+    }
+
+    @SuppressWarnings("unchecked")
     public Map<String, Map<String, Map<String, Double>>> getIntersections() throws IndicoException {
         return (Map<String, Map<String, Map<String, Double>>>) get(Api.Intersections);
     }
