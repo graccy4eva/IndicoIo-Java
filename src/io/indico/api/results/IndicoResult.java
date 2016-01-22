@@ -33,7 +33,7 @@ public class IndicoResult {
                 (response.containsKey("error") ? response.get("error") : "unexpected error")
             );
         }
-        
+
         if (api.type != ApiType.Multi)
             results.put(api, response.get("results"));
         else {
@@ -85,6 +85,11 @@ public class IndicoResult {
         }
 
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Double> getTextFeatures() throws IndicoException {
+        return (List<Double>) get(Api.TextFeatures);
     }
 
     @SuppressWarnings("unchecked")

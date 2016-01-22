@@ -24,6 +24,7 @@ public enum Api {
     Places(ApiType.Text, "places"),
     Organizations(ApiType.Text, "organizations"),
     Relevance(ApiType.Text, "relevance"),
+    TextFeatures(ApiType.Text, "textfeatures"),
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
