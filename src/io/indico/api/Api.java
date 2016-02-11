@@ -28,14 +28,14 @@ public enum Api {
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
-    ImageFeatures(ApiType.Image, "imagefeatures", "size", 144, "minResize", true, "version", 3),
+    ImageFeatures(ApiType.Image, "imagefeatures", "size", 512, "minResize", true, "version", 3),
     ImageRecognition(ApiType.Image, "imagerecognition", "size", 144, "minResize", true),
     FacialFeatures(ApiType.Image, "facialfeatures", "size", 64, "minResize", false),
     ContentFiltering(ApiType.Image, "contentfiltering", "size", 128, "minResize", true),
     FacialLocalization(ApiType.Image, "faciallocalization", "size", -1, "minResize", false),
 
     //CUSTOM APIS
-    CUSTOM(ApiType.Custom, "custom", "size", 144, "minResize", true),
+    CUSTOM(ApiType.Custom, "custom", "size", 512, "minResize", true),
 
     // MULTI APIS
     Intersections(ApiType.Multi, "intersections", "type", ApiType.Text),
