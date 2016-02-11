@@ -335,7 +335,7 @@ public class TestApiSuccess {
         Indico test = new Indico(new File("config.properties"));
 
         List<Double> results = test.imageFeatures.predict("bin/lena.png").getImageFeatures();
-        assertTrue(results.size() == 2048);
+        assertTrue(results.size() == 4096);
     }
 
     @Test
