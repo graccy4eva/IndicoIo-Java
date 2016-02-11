@@ -3,7 +3,7 @@
     <name>indicoio-java</name>
   <groupId>io.indico</groupId>
   <artifactId>io.indico</artifactId>
-  <version>3.8.0</version>
+  <version>3.9.0</version>
   <packaging>jar</packaging>
   <description>A Java Wrapper for indico. Use pre-built state of the art machine learning algorithms with a single line of code.</description>
   <url>http://indico.io</url>
