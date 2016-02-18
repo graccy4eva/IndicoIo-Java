@@ -17,10 +17,12 @@ import io.indico.api.utils.IndicoException;
 public class IndicoCollection {
     CustomApiClient client;
     String collectionName;
+    String domain;
 
-    public IndicoCollection(CustomApiClient client, String collectionName) {
+    public IndicoCollection(CustomApiClient client, String collectionName, String domain) {
         this.collectionName = collectionName;
         this.client = client;
+        this.domain = domain;
     }
 
     public String addData(List<CollectionData> examples) throws IOException, IndicoException {
@@ -28,7 +30,7 @@ public class IndicoCollection {
         for (CollectionData data : examples) {
             postPackage.add(new String[] {data.data, data.result.toString()});
         }
-        return this.client.addData(this.collectionName, postPackage);
+        return this.client.addData(this.collectionName, postPackage, this.domain);
     }
 
     public String train() throws IOException, IndicoException {
@@ -64,11 +66,11 @@ public class IndicoCollection {
 
     public List<?> predict(List<String> data) throws IOException, IndicoException {
         List<String> postData = ImageUtils.convertToImages(data, Api.CUSTOM.getSize(null), (boolean) Api.CUSTOM.get("minResize"));
-        return this.client.predict(this.collectionName, postData);
+        return this.client.predict(this.collectionName, postData, this.domain);
     }
 
     public Object predict(String data) throws IOException, IndicoException {
         String postData = ImageUtils.convertToImage(data, Api.CUSTOM.getSize(null), (boolean) Api.CUSTOM.get("minResize"));
-        return this.client.predict(this.collectionName, postData);
+        return this.client.predict(this.collectionName, postData, this.domain);
     }
 }
