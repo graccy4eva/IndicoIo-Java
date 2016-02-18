@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.indico.api.Api;
 import io.indico.api.CustomApiClient;
@@ -55,7 +57,13 @@ public class IndicoCollection {
     }
 
     public void waitUntilReady(long interval) throws IOException, IndicoException {
-        while (!Objects.equals(this.client.info(this.collectionName).get("status").toString(), "ready")) {
+        String status;
+        while (true) {
+            status = this.client.info(this.collectionName).get("status").toString();
+            if (Objects.equals(status, "ready"))
+                return;
+            if (!Objects.equals(status, "training"))
+                throw new IndicoException("Collection training has failed with status " + status);
             try {
                 Thread.sleep(interval);
             } catch(InterruptedException ex) {
