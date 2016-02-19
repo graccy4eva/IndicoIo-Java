@@ -71,7 +71,7 @@ public enum Api {
     }
 
     public int getSize(Map<String, Object> userParams) {
-        if (this == Api.FER && userParams != null && userParams.get("detect") != null && (boolean) userParams.get("detect")) {
+        if (this == Api.FER && userParams != null && userParams.get("detect") == true) {
             return -1;
         }
 
