@@ -19,20 +19,12 @@ public class CustomApiClient extends ApiClient {
         this.api = Api.CUSTOM;
     }
 
-    public IndicoCollection getCollection(String collectionName, String domain) {
-        return new IndicoCollection(this, collectionName, domain);
-    }
-
     public IndicoCollection getCollection(String collectionName) {
-        return getCollection(collectionName, null);
-    }
-
-    public IndicoCollection newCollection(String collectionName, String domain) {
-        return getCollection(collectionName, domain);
+        return new IndicoCollection(this, collectionName);
     }
 
     public IndicoCollection newCollection(String collectionName) {
-        return getCollection(collectionName, null);
+        return getCollection(collectionName);
     }
 
     @SuppressWarnings("unchecked")
@@ -40,21 +32,21 @@ public class CustomApiClient extends ApiClient {
         return (Map<String, Map<String, ?>>) customResult(baseCall(api, null, false, "collections", null), "getAllCollections");
     }
 
-    public String addData(final String collectionName, List<String[]> data, String domain) throws IOException, IndicoException {
-        return customCall(collectionName, "add_data", data, true, domain).toString();
+    public String addData(final String collectionName, List<String[]> data) throws IOException, IndicoException {
+        return customCall(collectionName, "add_data", data, true).toString();
     }
 
     public String train(final String collectionName) throws IOException, IndicoException {
-        return customCall(collectionName, "train", null, false, null).toString();
+        return customCall(collectionName, "train", null, false).toString();
     }
 
     public String clear(final String collectionName) throws IOException, IndicoException {
-        return customCall(collectionName, "clear_collection", null, false, null).toString();
+        return customCall(collectionName, "clear_collection", null, false).toString();
     }
 
     @SuppressWarnings("unchecked")
     public String removeExamples(final String collectionName, List<String> data) throws IOException, IndicoException {
-        return customCall(collectionName, "remove_example", data, true, null).toString();
+        return customCall(collectionName, "remove_example", data, true).toString();
     }
 
     @SuppressWarnings("unchecked")
@@ -66,20 +58,18 @@ public class CustomApiClient extends ApiClient {
         return collection;
     }
 
-    public List<?> predict(final String collectionName, List<String> data, String domain) throws IOException, IndicoException {
-        return (List<?>) customCall(collectionName, "predict", data, true, domain);
+    public List<?> predict(final String collectionName, List<String> data) throws IOException, IndicoException {
+        return (List<?>) customCall(collectionName, "predict", data, true);
 
     }
 
-    public Object predict(final String collectionName, String data, String domain) throws IOException, IndicoException {
-        return customCall(collectionName, "predict", data, false, domain);
+    public Object predict(final String collectionName, String data) throws IOException, IndicoException {
+        return customCall(collectionName, "predict", data, false);
     }
 
-    private Object customCall(final String collectionName, String method, Object data, boolean batch, final String domain) throws IOException, IndicoException {
+    private Object customCall(final String collectionName, String method, Object data, boolean batch) throws IOException, IndicoException {
         return customResult(baseCall(api, data, batch, method, new HashMap<String, Object>() {{
             put("collection", collectionName);
-            if (domain != null)
-                put("domain", domain);
         }}), method);
     }
 

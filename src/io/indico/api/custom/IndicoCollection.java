@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import io.indico.api.Api;
 import io.indico.api.CustomApiClient;
@@ -19,12 +17,10 @@ import io.indico.api.utils.IndicoException;
 public class IndicoCollection {
     CustomApiClient client;
     String collectionName;
-    String domain;
 
-    public IndicoCollection(CustomApiClient client, String collectionName, String domain) {
+    public IndicoCollection(CustomApiClient client, String collectionName) {
         this.collectionName = collectionName;
         this.client = client;
-        this.domain = domain;
     }
 
     public String addData(List<CollectionData> examples) throws IOException, IndicoException {
@@ -32,7 +28,7 @@ public class IndicoCollection {
         for (CollectionData data : examples) {
             postPackage.add(new String[] {data.data, data.result.toString()});
         }
-        return this.client.addData(this.collectionName, postPackage, this.domain);
+        return this.client.addData(this.collectionName, postPackage);
     }
 
     public String train() throws IOException, IndicoException {
@@ -57,13 +53,7 @@ public class IndicoCollection {
     }
 
     public void waitUntilReady(long interval) throws IOException, IndicoException {
-        String status;
-        while (true) {
-            status = this.client.info(this.collectionName).get("status").toString();
-            if (Objects.equals(status, "ready"))
-                return;
-            if (!Objects.equals(status, "training"))
-                throw new IndicoException("Collection training has failed with status " + status);
+        while (!Objects.equals(this.client.info(this.collectionName).get("status").toString(), "ready")) {
             try {
                 Thread.sleep(interval);
             } catch(InterruptedException ex) {
@@ -74,11 +64,11 @@ public class IndicoCollection {
 
     public List<?> predict(List<String> data) throws IOException, IndicoException {
         List<String> postData = ImageUtils.convertToImages(data, Api.CUSTOM.getSize(null), (boolean) Api.CUSTOM.get("minResize"));
-        return this.client.predict(this.collectionName, postData, this.domain);
+        return this.client.predict(this.collectionName, postData);
     }
 
     public Object predict(String data) throws IOException, IndicoException {
         String postData = ImageUtils.convertToImage(data, Api.CUSTOM.getSize(null), (boolean) Api.CUSTOM.get("minResize"));
-        return this.client.predict(this.collectionName, postData, this.domain);
+        return this.client.predict(this.collectionName, postData);
     }
 }
