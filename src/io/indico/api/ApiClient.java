@@ -160,7 +160,12 @@ public class ApiClient {
         }
 
         if (extraParams.containsKey("version")) {
-            builder.append("&version=").append(extraParams.remove("version"));
+            String version = extraParams.get("version").toString();
+            if (api == Api.Keywords && extraParams.get("language") != null && extraParams.get("language") != "english") {
+                version = "1";
+            }
+            extraParams.remove("version");
+            builder.append("&version=").append(version);
         }
 
         return builder.toString();

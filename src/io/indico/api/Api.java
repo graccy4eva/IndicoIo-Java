@@ -16,7 +16,7 @@ public enum Api {
     Language(ApiType.Text, "language"),
     TextTags(ApiType.Text, "texttags"),
     NamedEntities(ApiType.Text, "namedentities"),
-    Keywords(ApiType.Text, "keywords"),
+    Keywords(ApiType.Text, "keywords", "version", 2),
     TwitterEngagement(ApiType.Text, "twitterengagement"),
     Personality(ApiType.Text, "personality"),
     Persona(ApiType.Text, "personality"),
