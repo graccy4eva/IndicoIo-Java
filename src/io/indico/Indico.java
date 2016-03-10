@@ -70,7 +70,9 @@ public class Indico {
         this.namedEntities = new TextApi(Api.NamedEntities, this.apiKey, this.cloud);
         this.text = new TextApi(Api.MultiText, this.apiKey, this.cloud);
         this.intersections = new TextApi(Api.Intersections, this.apiKey, this.cloud);
-        this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud);
+        this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud) {{
+
+        }};
         this.twitterEngagement = new TextApi(Api.TwitterEngagement, this.apiKey, this.cloud);
         this.personality = new TextApi(Api.Personality, this.apiKey, this.cloud);
         this.persona = new TextApi(Api.Persona, this.apiKey, this.cloud);

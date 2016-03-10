@@ -559,7 +559,7 @@ public class TestApiSuccess {
 
         String example = "Chris was here at Indico Data Solutions";
         Set<String> words = new HashSet<>();
-        Collections.addAll(words, example.replaceAll("\\p{P}", "").toLowerCase().split(" "));
+        Collections.addAll(words, example.split(" "));
         BatchIndicoResult result = test.keywords.predict(new String[] {example, example});
         List<Map<String, Double>> results = result.getKeywords();
 

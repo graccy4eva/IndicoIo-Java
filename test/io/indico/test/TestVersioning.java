@@ -40,7 +40,6 @@ public class TestVersioning {
         File lena = new File("bin/lena.png");
 
         List<Double> results = test.imageFeatures.predict(lena, new HashMap<String, Object>() {{
-            put("detect", true);
             put("version", 2);
         }}).getImageFeatures();
 
