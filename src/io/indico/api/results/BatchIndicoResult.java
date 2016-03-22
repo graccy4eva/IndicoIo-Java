@@ -9,6 +9,7 @@ import java.util.Map;
 import io.indico.api.Api;
 import io.indico.api.image.FacialEmotion;
 import io.indico.api.text.Category;
+import io.indico.api.text.Emotion;
 import io.indico.api.text.Language;
 import io.indico.api.text.Persona;
 import io.indico.api.text.Personality;
@@ -66,6 +67,11 @@ public class BatchIndicoResult {
     @SuppressWarnings("unchecked")
     public List<Map<Language, Double>> getLanguage() throws IndicoException {
         return EnumParser.parse(Language.class, ((List<Map<String, Double>>) get(Api.Language)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map<Emotion, Double>> getEmotion() throws IndicoException {
+        return EnumParser.parse(Emotion.class, ((List<Map<String, Double>>) get(Api.Emotion)));
     }
 
     @SuppressWarnings("unchecked")
