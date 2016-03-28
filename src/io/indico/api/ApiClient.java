@@ -108,7 +108,6 @@ public class ApiClient {
             + "/" + api.toString()
             + (batch ? "/batch" : "")
             + (method != null ? "/" + method : "")
-            + "?key=" + apiKey
             + addUrlParams(api, extraParams);
 
         HttpPost basePost = new HttpPost(url);
@@ -132,6 +131,7 @@ public class ApiClient {
         basePost.addHeader("client-lib", "java");
         basePost.addHeader("client-lib", "3.2");
         basePost.addHeader("Accept-Charset", "utf-8");
+        basePost.addHeader("X-ApiKey", apiKey);
 
         return basePost;
     }
@@ -168,7 +168,9 @@ public class ApiClient {
             builder.append("&version=").append(version);
         }
 
-        return builder.toString();
+        String result = builder.toString();
+
+        return result.isEmpty() ? "" : "?" + result;
     }
 
     private ApiClient(String baseUrl, String apiKey, String privateCloud) throws IndicoException {
