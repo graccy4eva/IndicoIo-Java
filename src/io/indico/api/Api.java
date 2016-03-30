@@ -23,9 +23,13 @@ public enum Api {
     People(ApiType.Text, "people"),
     Places(ApiType.Text, "places"),
     Organizations(ApiType.Text, "organizations"),
-    Relevance(ApiType.Text, "relevance"),
+    Relevance(ApiType.Text, "relevance", "defaults", new HashMap<String, Object>() {{
+        put("synonyms", false);
+    }}),
     Emotion(ApiType.Text, "emotion"),
-    TextFeatures(ApiType.Text, "textfeatures"),
+    TextFeatures(ApiType.Text, "textfeatures", "defaults", new HashMap<String, Object>() {{
+        put("synonyms", false);
+    }}),
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
@@ -70,7 +74,6 @@ public enum Api {
     public Object get(String key) {
         return params != null ? params.get(key) : null;
     }
-
     public int getSize(Map<String, Object> userParams) {
         if (this == Api.FER && userParams != null && userParams.get("detect") != null && (boolean) userParams.get("detect")) {
             return -1;

@@ -122,6 +122,11 @@ public class ApiClient {
             rawParams.put("data", data);
         }
 
+        Object defaultParams = api.get("defaults");
+        if (defaultParams != null) {
+            rawParams.putAll((Map<String, Object>) defaultParams);
+        }
+
         String entity = new Gson().toJson(rawParams);
         StringEntity params = new StringEntity(entity, "utf-8");
         params.setContentType("application/json");
