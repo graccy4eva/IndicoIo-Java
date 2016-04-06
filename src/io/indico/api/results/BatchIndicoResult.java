@@ -80,27 +80,6 @@ public class BatchIndicoResult {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Map<String, Map<Category, Double>>> getNamedEntities() throws IndicoException {
-        List<Map<String, Map<Category, Double>>> result = new ArrayList<>();
-
-        List<Map<String, Map<String, Object>>> responses = (List<Map<String, Map<String, Object>>>) get(Api.NamedEntities);
-        for (Map<String, Map<String, Object>> response : responses) {
-            Map<String, Map<Category, Double>> each = new HashMap<>();
-            for (Map.Entry<String, Map<String, Object>> entry : response.entrySet()) {
-                Map<String, Double> res = new HashMap<>();
-
-                res.putAll((Map<String, Double>) entry.getValue().remove("categories"));
-                res.put("confidence", (Double) entry.getValue().get("confidence"));
-                each.put(entry.getKey(), EnumParser.parse(Category.class, res));
-            }
-            result.add(each);
-        }
-
-        return result;
-    }
-
-
-    @SuppressWarnings("unchecked")
     public List<Map<FacialEmotion, Double>> getFer() throws IndicoException {
         return EnumParser.parse(FacialEmotion.class, ((List<Map<String, Double>>) get(Api.FER)));
     }

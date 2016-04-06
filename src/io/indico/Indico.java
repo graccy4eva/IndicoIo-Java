@@ -16,7 +16,7 @@ import io.indico.api.utils.IndicoException;
 
 public class Indico {
     public TextApi sentiment, sentimentHQ, political, language, textTags,
-        keywords, namedEntities, twitterEngagement, intersections, personality, persona,
+        keywords, twitterEngagement, intersections, personality, persona,
         people, places, organizations, relevance, textFeatures, emotion, text;
     public ImageApi fer, facialFeatures, imageFeatures, imageRecognition, contentFiltering, facialLocalization, image;
     public CustomApiClient custom;
@@ -67,7 +67,6 @@ public class Indico {
         this.political = new TextApi(Api.Political, this.apiKey, this.cloud);
         this.language = new TextApi(Api.Language, this.apiKey, this.cloud);
         this.textTags = new TextApi(Api.TextTags, this.apiKey, this.cloud);
-        this.namedEntities = new TextApi(Api.NamedEntities, this.apiKey, this.cloud);
         this.text = new TextApi(Api.MultiText, this.apiKey, this.cloud);
         this.intersections = new TextApi(Api.Intersections, this.apiKey, this.cloud);
         this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud) {{
