@@ -169,33 +169,6 @@ public class TestApiSuccess {
     }
 
     @Test
-    public void testNamedEntities() throws IOException, IndicoException {
-        Indico test = new Indico(new File("config.properties"));
-        Map<String, Map<Category, Double>> result = test.namedEntities.predict(
-            "Indico Data Solutions is the best startup in Boston, Massachusetts."
-        ).getNamedEntities();
-
-        for (Map.Entry<String, Map<Category, Double>> entry : result.entrySet()) {
-            assertTrue(entry.getValue().keySet().containsAll(Arrays.asList(Category.values())));
-        }
-    }
-
-    @Test
-    public void testBatchNamedEntities() throws IOException, IndicoException {
-        Indico test = new Indico(new File("config.properties"));
-
-        List<Map<String, Map<Category, Double>>> results = test.namedEntities.predict(new String[] {
-            "Indico Data Solutions is the best startup in Boston, Massachusetts."
-           ,"Indico Data Solutions is the best startup in Boston, Massachusetts."
-        }).getNamedEntities();
-
-        assertTrue(results.size() == 2);
-        for (Map.Entry<String, Map<Category, Double>> entry : results.get(0).entrySet()) {
-            assertTrue(entry.getValue().keySet().containsAll(Arrays.asList(Category.values())));
-        }
-    }
-
-    @Test
     public void testBatchTextTagsList() throws IOException, IndicoException {
         Indico test = new Indico(new File("config.properties"));
         List<String> examples = new ArrayList<>();

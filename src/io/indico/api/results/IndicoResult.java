@@ -79,21 +79,6 @@ public class IndicoResult {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Map<Category, Double>> getNamedEntities() throws IndicoException {
-        Map<String, Map<Category, Double>> result = new HashMap<>();
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) get(Api.NamedEntities);
-        for (Map.Entry<String, Map<String, Object>> entry : response.entrySet()) {
-            Map<String, Double> res = new HashMap<>();
-
-            res.putAll((Map<String, Double>) entry.getValue().remove("categories"));
-            res.put("confidence", (Double) entry.getValue().get("confidence"));
-            result.put(entry.getKey(), EnumParser.parse(Category.class, res));
-        }
-
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
     public List<Double> getTextFeatures() throws IndicoException {
         return (List<Double>) get(Api.TextFeatures);
     }

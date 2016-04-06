@@ -13,7 +13,6 @@ Supported APIs:
 - Positive/Negative Sentiment Analysis
 - Political Sentiment Analysis
 - Keywords Analysis
-- Named Entities Recognition
 - Image Feature Extraction
 - Image Recognition
 - Content Filtering Analysis
