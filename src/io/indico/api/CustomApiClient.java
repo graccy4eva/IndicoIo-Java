@@ -59,11 +59,7 @@ public class CustomApiClient extends ApiClient {
 
     @SuppressWarnings("unchecked")
     public Map<String, ?> info(String collectionName) throws IOException, IndicoException {
-        Map<String, ?> collection = getAllCollections().get(collectionName);
-        if (collection == null) {
-            throw new IndicoException("Collection " + collectionName + " does not exist");
-        }
-        return collection;
+        return (Map<String, ?>) customCall(collectionName, "info", null, false, null);
     }
 
     public List<?> predict(final String collectionName, List<String> data, String domain) throws IOException, IndicoException {
