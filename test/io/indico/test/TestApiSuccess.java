@@ -113,31 +113,6 @@ public class TestApiSuccess {
     }
 
     @Test
-    public void testPolitical() throws IOException, IndicoException {
-        Indico test = new Indico(new File("config.properties"));
-        assertTrue(test.political.predict("test").getPolitical().size() == PoliticalClass.values().length);
-    }
-
-    @Test
-    public void testBatchPoliticalList() throws IOException, IndicoException {
-        Indico test = new Indico(new File("config.properties"));
-        List<String> examples = new ArrayList<String>();
-        examples.add("this is great!");
-        examples.add("this is awful!");
-        List<Map<PoliticalClass, Double>> results = test.political.predict(examples).getPolitical();
-        assertTrue(results.size() == 2);
-        assertTrue(results.get(0).size() == PoliticalClass.values().length);
-    }
-
-    @Test
-    public void testBatchPoliticalArray() throws IOException, IndicoException {
-        Indico test = new Indico(new File("config.properties"));
-        List<Map<PoliticalClass, Double>> results = test.political.predict(new String[]{"this is great!", "this is awful!"}).getPolitical();
-        assertTrue(results.size() == 2);
-        assertTrue(results.get(0).size() == PoliticalClass.values().length);
-    }
-
-    @Test
     public void testLanguage() throws IOException, IndicoException {
         Indico test = new Indico(new File("config.properties"));
         assertTrue(test.language.predict("test").getLanguage().size() == Language.values().length);

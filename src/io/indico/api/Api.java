@@ -12,7 +12,7 @@ public enum Api {
     // TEXT APIS
     Sentiment(ApiType.Text, "sentiment"),
     SentimentHQ(ApiType.Text, "sentimenthq"),
-    Political(ApiType.Text, "political"),
+    Political(ApiType.Text, "political", "version", 2),
     Language(ApiType.Text, "language"),
     TextTags(ApiType.Text, "texttags"),
     Keywords(ApiType.Text, "keywords", "version", 2),
