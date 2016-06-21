@@ -19,9 +19,9 @@ public enum Api {
     TwitterEngagement(ApiType.Text, "twitterengagement"),
     Personality(ApiType.Text, "personality"),
     Persona(ApiType.Text, "personality"),
-    People(ApiType.Text, "people"),
-    Places(ApiType.Text, "places"),
-    Organizations(ApiType.Text, "organizations"),
+    People(ApiType.Text, "people", "version", 2),
+    Places(ApiType.Text, "places", "version", 2),
+    Organizations(ApiType.Text, "organizations", "version", 2),
     Relevance(ApiType.Text, "relevance", "defaults", new HashMap<String, Object>() {{
         put("synonyms", false);
     }}),

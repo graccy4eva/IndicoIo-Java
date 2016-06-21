@@ -27,7 +27,7 @@ public class TestOrganizations {
 
         boolean expected = false;
         for (Map<String, Object> obj : results) {
-            if (obj.get("text").equals("ISIS")) {
+            if (obj.get("text").equals("U.S. Special Operations")) {
                 expected = true;
                 break;
             }
@@ -46,7 +46,7 @@ public class TestOrganizations {
         assertTrue(results.size() == 2);
         boolean expected = false;
         for (Map<String, Object> obj : results.get(0)) {
-            if (obj.get("text").equals("ISIS")) {
+            if (obj.get("text").equals("U.S. Special Operations")) {
                 expected = true;
                 break;
             }

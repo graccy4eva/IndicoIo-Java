@@ -22,7 +22,7 @@ public class TestPlaces {
     public void testSingle() throws IOException, IndicoException {
         Indico test = new Indico(new File("config.properties"));
 
-        String example = "Lets all go to Virginia Beach before it gets too cold to wander outside.";
+        String example = "Lets all go to Virginia beach before it gets too cold to wander outside.";
         List<Map<String, Object>> results = test.places.predict(example).getPlaces();
 
         boolean expected = false;
@@ -40,7 +40,7 @@ public class TestPlaces {
     public void testBatch() throws IOException, IndicoException {
         Indico test = new Indico(new File("config.properties"));
 
-        final String example = "Lets all go to Virginia Beach before it gets too cold to wander outside.";
+        final String example = "Lets all go to Virginia beach before it gets too cold to wander outside.";
         BatchIndicoResult result = test.places.predict(new String[] {example, example});
         List<List<Map<String, Object>>> results = result.getPlaces();
         assertTrue(results.size() == 2);
