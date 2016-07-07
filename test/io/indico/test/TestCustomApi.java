@@ -12,6 +12,7 @@ import java.util.Map;
 import io.indico.Indico;
 import io.indico.api.custom.CollectionData;
 import io.indico.api.custom.IndicoCollection;
+import io.indico.api.custom.Permission;
 import io.indico.api.utils.IndicoException;
 
 /**
@@ -19,29 +20,24 @@ import io.indico.api.utils.IndicoException;
  */
 public class TestCustomApi extends TestCase {
     String collectionName = "__test_java_clientlib__";
-
-    Map<String, Object> params = new HashMap<String, Object>() {{
-        put("collection", collectionName);
-    }};
-
-    @Override protected void tearDown() throws Exception {
-        super.tearDown();
-        Indico test = new Indico(new File("config.properties"));
-        try {
-            test.custom.getCollection(collectionName).clear();
-        } catch (Exception ignored) {
-
-        }
-    }
+    String altName = "__alt_test_java_clientlib__";
+    String test_user_email="contact@indico.io";
 
     @Override protected void setUp() throws Exception {
         super.setUp();
         Indico test = new Indico(new File("config.properties"));
         try {
             test.custom.getCollection(collectionName).clear();
-        } catch (Exception ignored) {
-
-        }
+        } catch (Exception ignored) {}
+        try {
+            test.custom.getCollection(altName).clear();
+        } catch (Exception ignored) {}
+        try {
+            test.custom.getCollection(collectionName).deregister();
+        } catch (Exception ignored) {}
+        try {
+            test.custom.getCollection(altName).deregister();
+        } catch (Exception ignored) {}
     }
 
     List<CollectionData> textData = new ArrayList<CollectionData>() {{
@@ -120,5 +116,113 @@ public class TestCustomApi extends TestCase {
         Map<String, Double> result_removed = (Map<String, Double>) collection.predict(textData.get(0).getData());
         assertFalse(result_removed.containsKey(textData.get(1).getResult()));
 
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testRegister() throws IOException, IndicoException, InterruptedException {
+        Indico test = new Indico(new File("config.properties"));
+
+        IndicoCollection collection = test.custom.getCollection(collectionName);
+
+        // Test Not Registered && Not Public
+        collection.addData(textData);
+        collection.train();
+        collection.waitUntilReady(1000);
+        collection.register();
+        Map<String, ?> results = collection.info();
+        assertTrue((Boolean) results.get("registered"));
+        assertFalse((Boolean) results.get("public"));
+        collection.deregister();
+        results = collection.info();
+        assertFalse((Boolean) results.get("registered"));
+        assertFalse((Boolean) results.get("public"));
+        collection.clear();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testMakePublic() throws IOException, IndicoException, InterruptedException {
+        Indico test = new Indico(new File("config.properties"));
+
+        IndicoCollection collection = test.custom.getCollection(collectionName);
+
+        // Test Not Registered && Not Public
+        collection.addData(textData);
+        collection.train();
+        collection.waitUntilReady(1000);
+        collection.register(true);
+        Map<String, ?> results = collection.info();
+        assertTrue((Boolean) results.get("registered"));
+        assertTrue((Boolean) results.get("public"));
+        collection.deregister();
+        results = collection.info();
+        assertFalse((Boolean) results.get("registered"));
+        assertFalse((Boolean) results.get("public"));
+        collection.clear();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testAuthorizedRead() throws IOException, IndicoException, InterruptedException {
+        Indico test = new Indico(new File("config.properties"));
+
+        IndicoCollection collection = test.custom.getCollection(collectionName);
+
+        // Test Not Registered && Not Public
+        collection.addData(textData);
+        collection.train();
+        collection.waitUntilReady(1000);
+        collection.register();
+        collection.authorize(test_user_email, Permission.READ);
+        Map<String, ?> results = collection.info();
+        assertTrue(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
+        collection.deauthorize(test_user_email);
+        results = collection.info();
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
+        collection.clear();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testAuthorizedWrite() throws IOException, IndicoException, InterruptedException {
+        Indico test = new Indico(new File("config.properties"));
+
+        IndicoCollection collection = test.custom.getCollection(collectionName);
+
+        // Test Not Registered && Not Public
+        collection.addData(textData);
+        collection.train();
+        collection.waitUntilReady(1000);
+        collection.register();
+        collection.authorize(test_user_email, Permission.WRITE);
+        Map<String, ?> results = collection.info();
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
+        assertTrue(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
+        collection.deauthorize(test_user_email);
+        results = collection.info();
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
+        assertFalse(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
+        collection.clear();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testRename() throws IOException, IndicoException, InterruptedException {
+        Indico test = new Indico(new File("config.properties"));
+
+        IndicoCollection collection = test.custom.getCollection(collectionName);
+
+        // Test Not Registered && Not Public
+        collection.addData(textData);
+        collection.train();
+        collection.waitUntilReady(1000);
+        collection.rename(altName);
+        try {
+            IndicoCollection oldCollection = test.custom.getCollection(collectionName);
+            oldCollection.train();
+            assertTrue(false);
+        } catch (IndicoException ignored) {}
+
+        assertTrue(collection.name().equals(altName));
+        collection.info();
+        collection.clear();
     }
 }
