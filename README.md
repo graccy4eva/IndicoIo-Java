@@ -30,7 +30,7 @@ You can install the latest version of the indico module using Maven by including
 <dependency>
     <groupId>io.indico</groupId>
     <artifactId>indico</artifactId>
-    <version>3.4.0</version>
+    <version>3.14.0</version>
 </dependency>
 ```
 <b>Method 2 - Use the jar</b>
