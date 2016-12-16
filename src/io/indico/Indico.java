@@ -14,7 +14,7 @@ import io.indico.api.utils.IndicoException;
 public class Indico {
     public TextApi sentiment, sentimentHQ, political, language, textTags,
         keywords, twitterEngagement, intersections, personality, persona,
-        people, places, organizations, relevance, textFeatures, emotion, text;
+        people, places, organizations, relevance, textFeatures, emotion, text, summarization;
     public ImageApi fer, facialFeatures, imageFeatures, imageRecognition, contentFiltering, facialLocalization, image;
     public PDFApi pdfExtraction;
     public CustomApiClient custom;
@@ -67,9 +67,7 @@ public class Indico {
         this.textTags = new TextApi(Api.TextTags, this.apiKey, this.cloud);
         this.text = new TextApi(Api.MultiText, this.apiKey, this.cloud);
         this.intersections = new TextApi(Api.Intersections, this.apiKey, this.cloud);
-        this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud) {{
-
-        }};
+        this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud);
         this.twitterEngagement = new TextApi(Api.TwitterEngagement, this.apiKey, this.cloud);
         this.personality = new TextApi(Api.Personality, this.apiKey, this.cloud);
         this.persona = new TextApi(Api.Persona, this.apiKey, this.cloud);
@@ -80,6 +78,7 @@ public class Indico {
         this.emotion = new TextApi(Api.Emotion, this.apiKey, this.cloud);
         this.textFeatures = new TextApi(Api.TextFeatures, this.apiKey, this.cloud);
         this.pdfExtraction = new PDFApi(Api.PDFExtraction, this.apiKey, this.cloud);
+        this.summarization = new TextApi(Api.Summarization, this.apiKey, this.cloud);
 
         this.fer = new ImageApi(Api.FER, this.apiKey, this.cloud);
         this.facialFeatures = new ImageApi(Api.FacialFeatures, this.apiKey, this.cloud);

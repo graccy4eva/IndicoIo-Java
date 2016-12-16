@@ -192,6 +192,11 @@ public class BatchIndicoResult {
     }
 
     @SuppressWarnings("unchecked")
+    public List<List<String>> getSummarization() throws IndicoException {
+        return (List<List<String>>) get(Api.Summarization);
+    }
+
+    @SuppressWarnings("unchecked")
     public Map<String, Map<String, Map<String, Double>>> getIntersections() throws IndicoException {
         return (Map<String, Map<String, Map<String, Double>>>) get(Api.Intersections);
     }
