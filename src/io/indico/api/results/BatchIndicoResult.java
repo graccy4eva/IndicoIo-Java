@@ -8,7 +8,6 @@ import java.util.Map;
 
 import io.indico.api.Api;
 import io.indico.api.image.FacialEmotion;
-import io.indico.api.text.Category;
 import io.indico.api.text.Emotion;
 import io.indico.api.text.Language;
 import io.indico.api.text.Persona;
@@ -185,6 +184,11 @@ public class BatchIndicoResult {
     @SuppressWarnings("unchecked")
     public List<List<Double>> getTextFeatures() throws IndicoException {
         return (List<List<Double>>) get(Api.TextFeatures);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map<String, List<Object>>> getPDFExtraction() throws IndicoException {
+        return (List<Map<String, List<Object>>>) get(Api.PDFExtraction);
     }
 
     @SuppressWarnings("unchecked")

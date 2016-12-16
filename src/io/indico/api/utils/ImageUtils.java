@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
  * Created by Chris on 6/23/15.
  */
 public class ImageUtils {
-    public static String encodeImage(BufferedImage image) {
+    private static String encodeImage(BufferedImage image) {
         String imageString = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

@@ -29,6 +29,7 @@ public enum Api {
     TextFeatures(ApiType.Text, "textfeatures", "defaults", new HashMap<String, Object>() {{
         put("synonyms", false);
     }}),
+    PDFExtraction(ApiType.Text, "pdfextraction"),
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
