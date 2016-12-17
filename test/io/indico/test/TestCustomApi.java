@@ -27,16 +27,16 @@ public class TestCustomApi extends TestCase {
         super.setUp();
         Indico test = new Indico(new File("config.properties"));
         try {
-            test.custom.getCollection(collectionName).clear();
-        } catch (Exception ignored) {}
-        try {
-            test.custom.getCollection(altName).clear();
-        } catch (Exception ignored) {}
-        try {
             test.custom.getCollection(collectionName).deregister();
         } catch (Exception ignored) {}
         try {
             test.custom.getCollection(altName).deregister();
+        } catch (Exception ignored) {}
+        try {
+            test.custom.getCollection(collectionName).clear();
+        } catch (Exception ignored) {}
+        try {
+            test.custom.getCollection(altName).clear();
         } catch (Exception ignored) {}
     }
 
@@ -136,7 +136,6 @@ public class TestCustomApi extends TestCase {
         results = collection.info();
         assertFalse((Boolean) results.get("registered"));
         assertFalse((Boolean) results.get("public"));
-        collection.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -144,7 +143,6 @@ public class TestCustomApi extends TestCase {
         Indico test = new Indico(new File("config.properties"));
 
         IndicoCollection collection = test.custom.getCollection(collectionName);
-
         // Test Not Registered && Not Public
         collection.addData(textData);
         collection.train();
@@ -157,7 +155,6 @@ public class TestCustomApi extends TestCase {
         results = collection.info();
         assertFalse((Boolean) results.get("registered"));
         assertFalse((Boolean) results.get("public"));
-        collection.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -179,7 +176,6 @@ public class TestCustomApi extends TestCase {
         results = collection.info();
         assertFalse(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
         assertFalse(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
-        collection.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -201,7 +197,6 @@ public class TestCustomApi extends TestCase {
         results = collection.info();
         assertFalse(((Map<String, List<String>>) results.get("permissions")).get("read").contains(test_user_email));
         assertFalse(((Map<String, List<String>>) results.get("permissions")).get("write").contains(test_user_email));
-        collection.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -223,6 +218,5 @@ public class TestCustomApi extends TestCase {
 
         assertTrue(collection.name().equals(altName));
         collection.info();
-        collection.clear();
     }
 }

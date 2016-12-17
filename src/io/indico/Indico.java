@@ -8,10 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import io.indico.api.Api;
-import io.indico.api.CustomApiClient;
-import io.indico.api.ImageApi;
-import io.indico.api.TextApi;
+import io.indico.api.*;
 import io.indico.api.utils.IndicoException;
 
 public class Indico {
@@ -19,6 +16,7 @@ public class Indico {
         keywords, twitterEngagement, intersections, personality, persona,
         people, places, organizations, relevance, textFeatures, emotion, text;
     public ImageApi fer, facialFeatures, imageFeatures, imageRecognition, contentFiltering, facialLocalization, image;
+    public PDFApi pdfExtraction;
     public CustomApiClient custom;
 
     public String apiKey;
@@ -81,7 +79,7 @@ public class Indico {
         this.relevance = new TextApi(Api.Relevance, this.apiKey, this.cloud);
         this.emotion = new TextApi(Api.Emotion, this.apiKey, this.cloud);
         this.textFeatures = new TextApi(Api.TextFeatures, this.apiKey, this.cloud);
-
+        this.pdfExtraction = new PDFApi(Api.PDFExtraction, this.apiKey, this.cloud);
 
         this.fer = new ImageApi(Api.FER, this.apiKey, this.cloud);
         this.facialFeatures = new ImageApi(Api.FacialFeatures, this.apiKey, this.cloud);
