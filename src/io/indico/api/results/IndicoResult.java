@@ -180,6 +180,10 @@ public class IndicoResult {
         return (List<Double>) get(Api.Relevance);
     }
 
+    public List<String> getSummarization() throws IndicoException {
+        return (List<String>) get(Api.Summarization);
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Map<String, Map<String, Map<String, Double>>>> getIntersections() throws IndicoException {

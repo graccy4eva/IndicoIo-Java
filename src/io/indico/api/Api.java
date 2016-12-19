@@ -30,6 +30,8 @@ public enum Api {
         put("synonyms", false);
     }}),
     PDFExtraction(ApiType.Text, "pdfextraction"),
+    Summarization(ApiType.Text, "summarization"),
+
 
     // IMAGE APIS
     FER(ApiType.Image, "fer", "size", 64, "minResize", false),
