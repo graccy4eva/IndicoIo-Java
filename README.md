@@ -37,7 +37,7 @@ You can install the latest version of the indico module using Maven by including
 
 You can also install indicoio by adding our jar to your project. We release both a "batteries included" jar that includes all of the indico dependencies, and an a-la-carte jar that includes only indico itself.
 
-Both are available for download on maven central, as well as the oss sonatype nexus. Instructions for using a jar in eclipse can be found here).
+Both are available for download on [maven central](http://repo1.maven.org/maven2/io/indico/io.indico/3.15.0/), as well as the oss sonatype nexus.
 
 <b>Method 3 - Downloading from Github</b>
 
