@@ -29,7 +29,7 @@ You can install the latest version of the indico module using Maven by including
 ``` xml
 <dependency>
     <groupId>io.indico</groupId>
-    <artifactId>indico</artifactId>
+    <artifactId>io.indico</artifactId>
     <version>3.14.0</version>
 </dependency>
 ```
