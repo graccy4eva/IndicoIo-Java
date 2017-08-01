@@ -108,15 +108,7 @@ public class ImageUtils {
                 new URL(imageString);
                 return imageString;
             } catch (MalformedURLException malformedURLException) {
-                // Check If Base64
-                boolean isBase64 = base64_regex.matcher(imageString).matches();
-                if (!isBase64) {
-                    return imageString;
-//                    throw new IllegalArgumentException("Invalid input image. Only file paths, base64 string, and urls are supported");
-                }
-
-                image = ImageIO.read(new ByteArrayInputStream(Base64.decodeBase64(imageString)));
-                return handleImage(image, size, minAxis);
+                return imageString;
             }
         }
     }
