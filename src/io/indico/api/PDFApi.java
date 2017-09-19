@@ -17,8 +17,8 @@ import java.util.Map;
 public class PDFApi extends ApiClient {
     Api api;
 
-    public PDFApi(Api api, String apiKey, String privateCloud) throws IndicoException {
-        super(apiKey, privateCloud);
+    public PDFApi(Api api) throws IndicoException {
+        super();
         this.api = api;
     }
 

@@ -2,6 +2,7 @@ package io.indico.api;
 
 import com.google.gson.Gson;
 
+import io.indico.Indico;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,15 +30,9 @@ public class ApiClient {
     private final static String PUBLIC_BASE_URL = "https://apiv2.indico.io";
 
     private static HttpClient httpClient = HttpClients.createDefault();
-    public String baseUrl, apiKey, privateCloud;
-
-    public ApiClient(String apiKey, String privateCloud) throws IndicoException {
-        this(PUBLIC_BASE_URL, apiKey, privateCloud);
-    }
-
 
     IndicoResult call(Api api, String data, Map<String, Object> extraParams)
-        throws UnsupportedOperationException, IOException, IndicoException {
+            throws UnsupportedOperationException, IOException, IndicoException {
 
         Map<String, ?> apiResponse = baseCall(api, data, false, extraParams);
         return new IndicoResult(api, apiResponse);
@@ -45,22 +40,22 @@ public class ApiClient {
 
     @SuppressWarnings("unchecked")
     BatchIndicoResult call(Api api, Map<String, Object> data, Map<String, Object> extraParams)
-        throws UnsupportedOperationException, IOException, IndicoException {
+            throws UnsupportedOperationException, IOException, IndicoException {
         Map<String, List<?>> apiResponse = (Map<String, List<?>>) baseCall(api, data, true, extraParams);
         return new BatchIndicoResult(api, apiResponse);
     }
 
     @SuppressWarnings("unchecked")
     BatchIndicoResult call(Api api, List<String> data, Map<String, Object> extraParams)
-        throws UnsupportedOperationException, IOException, IndicoException {
+            throws UnsupportedOperationException, IOException, IndicoException {
 
         Map<String, List<?>> apiResponse = (Map<String, List<?>>) baseCall(api, data, true, extraParams);
         return new BatchIndicoResult(api, apiResponse);
     }
 
     Map<String, ?> baseCall(Api api, Object data, boolean batch, Map<String, Object> extraParams)
-        throws UnsupportedOperationException, IOException, IndicoException {
-        if (extraParams!= null && !extraParams.containsKey("version")) {
+            throws UnsupportedOperationException, IOException, IndicoException {
+        if (extraParams != null && !extraParams.containsKey("version")) {
             extraParams.put("version", api.get("version") == null ? "1" : api.get("version"));
         }
         HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, null, batch));
@@ -69,8 +64,8 @@ public class ApiClient {
 
 
     Map<String, ?> baseCall(Api api, Object data, boolean batch, String method, Map<String, Object> extraParams)
-        throws UnsupportedOperationException, IOException, IndicoException {
-        if (extraParams!= null && !extraParams.containsKey("version")) {
+            throws UnsupportedOperationException, IOException, IndicoException {
+        if (extraParams != null && !extraParams.containsKey("version")) {
             extraParams.put("version", api.get("version") == null ? "1" : api.get("version"));
         }
         HttpResponse response = httpClient.execute(getBasePost(api, data, extraParams, method, batch));
@@ -101,14 +96,14 @@ public class ApiClient {
     }
 
     private HttpPost getBasePost(Api api, Object data, Map<String, Object> extraParams, String method, boolean batch)
-        throws UnsupportedEncodingException, IndicoException {
+            throws UnsupportedEncodingException, IndicoException {
 
-        String url = baseUrl
-            + (api.type == ApiType.Multi ? "/apis" : "")
-            + "/" + api.toString()
-            + (batch ? "/batch" : "")
-            + (method != null ? "/" + method : "")
-            + addUrlParams(api, extraParams);
+        String url = getBaseUrl()
+                + (api.type == ApiType.Multi ? "/apis" : "")
+                + "/" + api.toString()
+                + (batch ? "/batch" : "")
+                + (method != null ? "/" + method : "")
+                + addUrlParams(api, extraParams);
 
         HttpPost basePost = new HttpPost(url);
 
@@ -136,7 +131,7 @@ public class ApiClient {
         basePost.addHeader("client-lib", "java");
         basePost.addHeader("client-lib", "3.2");
         basePost.addHeader("Accept-Charset", "utf-8");
-        basePost.addHeader("X-ApiKey", apiKey);
+        basePost.addHeader("X-ApiKey", Indico.API_KEY);
 
         return basePost;
     }
@@ -178,14 +173,7 @@ public class ApiClient {
         return result.isEmpty() ? "" : "?" + result;
     }
 
-    private ApiClient(String baseUrl, String apiKey, String privateCloud) throws IndicoException {
-        if (apiKey == null) {
-            throw new IndicoException("API key cannot be null");
-        }
-
-        this.baseUrl = privateCloud == null ?
-            baseUrl : "https://" + privateCloud + ".indico.domains";
-        this.apiKey = apiKey;
-        this.privateCloud = privateCloud;
+    private String getBaseUrl() {
+        return Indico.URL_PROTOCOL + "://" + Indico.CLOUD + "." + Indico.HOST;
     }
 }

@@ -17,15 +17,14 @@ public class TextApi extends ApiClient {
     Api api;
     Map<String, Object> defaultArgs;
 
-    public TextApi(Api api, String apiKey, String privateCloud) throws IndicoException {
-        super(apiKey, privateCloud);
+    public TextApi(Api api) throws IndicoException {
+        super();
         this.api = api;
         this.defaultArgs = new HashMap<>();
     }
 
-    public TextApi(Api api, String apiKey, String privateCloud, Map<String, Object> defaultArgs) throws IndicoException {
-        super(apiKey, privateCloud);
-        this.api = api;
+    public TextApi(Api api, Map<String, Object> defaultArgs) throws IndicoException {
+        super();
         this.defaultArgs = defaultArgs;
     }
 

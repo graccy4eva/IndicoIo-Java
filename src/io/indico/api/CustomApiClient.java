@@ -14,8 +14,8 @@ import io.indico.api.utils.IndicoException;
 public class CustomApiClient extends ApiClient {
     Api api;
 
-    public CustomApiClient(String apiKey, String privateCloud) throws IndicoException {
-        super(apiKey, privateCloud);
+    public CustomApiClient() throws IndicoException {
+        super();
         this.api = Api.CUSTOM;
     }
 

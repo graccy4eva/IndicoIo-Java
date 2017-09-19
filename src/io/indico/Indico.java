@@ -19,17 +19,15 @@ public class Indico {
     public PDFApi pdfExtraction;
     public CustomApiClient custom;
 
-    public String apiKey;
-    public String cloud;
-
+    static public String HOST="indico.io", CLOUD="apiv2", URL_PROTOCOL="https", API_KEY;
     public Indico(String apiKey) throws IndicoException {
-        this.apiKey = apiKey;
+        Indico.API_KEY = apiKey;
         this.initializeClients();
     }
 
-    public Indico(String apiKey, String privateCloud) throws IndicoException {
-        this.apiKey = apiKey;
-        this.cloud = privateCloud;
+    public Indico(String apiKey, String cloud) throws IndicoException {
+        Indico.API_KEY = apiKey;
+        Indico.CLOUD = cloud;
 
         this.initializeClients();
     }
@@ -39,8 +37,10 @@ public class Indico {
         InputStream input = new FileInputStream(configurationFile);
         prop.load(input);
 
-        this.apiKey = prop.getProperty("apiKey");
-        this.cloud = prop.getProperty("privateCloud", null);
+        Indico.API_KEY = prop.getProperty("apiKey");
+        Indico.CLOUD = prop.getProperty("cloud", "apiv2");
+        Indico.URL_PROTOCOL = prop.getProperty("url_protocol", "https");
+        Indico.HOST = prop.getProperty("host", "indico.io");
 
         this.initializeClients();
     }
@@ -50,45 +50,61 @@ public class Indico {
         OutputStream output;
 
         output = new FileOutputStream(filePath);
-        prop.setProperty("apiKey", this.apiKey);
-        if (this.cloud != null) {
-            prop.setProperty("privateCloud", this.cloud);
+        prop.setProperty("apiKey", Indico.API_KEY);
+        if (Indico.CLOUD!= null) {
+            prop.setProperty("cloud", Indico.CLOUD);
         }
         prop.store(output, null);
 
         output.close();
     }
 
+    public static void setHost(String HOST) {
+        Indico.HOST = HOST;
+    }
+
+    public static void setcloud(String CLOUD) {
+        Indico.CLOUD = CLOUD;
+    }
+
+    public static void setUrlProtocol(String urlProtocol) {
+        Indico.URL_PROTOCOL = urlProtocol;
+    }
+
+    public static void setApiKey(String apiKey) {
+        Indico.API_KEY = apiKey;
+    }
+
     private void initializeClients() throws IndicoException {
-        this.sentiment = new TextApi(Api.Sentiment, this.apiKey, this.cloud);
-        this.sentimentHQ = new TextApi(Api.SentimentHQ, this.apiKey, this.cloud);
-        this.political = new TextApi(Api.Political, this.apiKey, this.cloud);
-        this.language = new TextApi(Api.Language, this.apiKey, this.cloud);
-        this.textTags = new TextApi(Api.TextTags, this.apiKey, this.cloud);
-        this.text = new TextApi(Api.MultiText, this.apiKey, this.cloud);
-        this.intersections = new TextApi(Api.Intersections, this.apiKey, this.cloud);
-        this.keywords = new TextApi(Api.Keywords, this.apiKey, this.cloud);
-        this.twitterEngagement = new TextApi(Api.TwitterEngagement, this.apiKey, this.cloud);
-        this.personality = new TextApi(Api.Personality, this.apiKey, this.cloud);
-        this.persona = new TextApi(Api.Persona, this.apiKey, this.cloud);
-        this.people = new TextApi(Api.People, this.apiKey, this.cloud);
-        this.places = new TextApi(Api.Places, this.apiKey, this.cloud);
-        this.organizations = new TextApi(Api.Organizations, this.apiKey, this.cloud);
-        this.relevance = new TextApi(Api.Relevance, this.apiKey, this.cloud);
-        this.emotion = new TextApi(Api.Emotion, this.apiKey, this.cloud);
-        this.textFeatures = new TextApi(Api.TextFeatures, this.apiKey, this.cloud);
-        this.pdfExtraction = new PDFApi(Api.PDFExtraction, this.apiKey, this.cloud);
-        this.summarization = new TextApi(Api.Summarization, this.apiKey, this.cloud);
+        this.sentiment = new TextApi(Api.Sentiment);
+        this.sentimentHQ = new TextApi(Api.SentimentHQ);
+        this.political = new TextApi(Api.Political);
+        this.language = new TextApi(Api.Language);
+        this.textTags = new TextApi(Api.TextTags);
+        this.text = new TextApi(Api.MultiText);
+        this.intersections = new TextApi(Api.Intersections);
+        this.keywords = new TextApi(Api.Keywords);
+        this.twitterEngagement = new TextApi(Api.TwitterEngagement);
+        this.personality = new TextApi(Api.Personality);
+        this.persona = new TextApi(Api.Persona);
+        this.people = new TextApi(Api.People);
+        this.places = new TextApi(Api.Places);
+        this.organizations = new TextApi(Api.Organizations);
+        this.relevance = new TextApi(Api.Relevance);
+        this.emotion = new TextApi(Api.Emotion);
+        this.textFeatures = new TextApi(Api.TextFeatures);
+        this.pdfExtraction = new PDFApi(Api.PDFExtraction);
+        this.summarization = new TextApi(Api.Summarization);
 
-        this.fer = new ImageApi(Api.FER, this.apiKey, this.cloud);
-        this.facialFeatures = new ImageApi(Api.FacialFeatures, this.apiKey, this.cloud);
-        this.imageFeatures = new ImageApi(Api.ImageFeatures, this.apiKey, this.cloud);
-        this.imageRecognition = new ImageApi(Api.ImageRecognition, this.apiKey, this.cloud);
-        this.contentFiltering = new ImageApi(Api.ContentFiltering, this.apiKey, this.cloud);
-        this.facialLocalization = new ImageApi(Api.FacialLocalization, this.apiKey, this.cloud);
-        this.image = new ImageApi(Api.MultiImage, this.apiKey, this.cloud);
+        this.fer = new ImageApi(Api.FER);
+        this.facialFeatures = new ImageApi(Api.FacialFeatures);
+        this.imageFeatures = new ImageApi(Api.ImageFeatures);
+        this.imageRecognition = new ImageApi(Api.ImageRecognition);
+        this.contentFiltering = new ImageApi(Api.ContentFiltering);
+        this.facialLocalization = new ImageApi(Api.FacialLocalization);
+        this.image = new ImageApi(Api.MultiImage);
 
-        this.custom = new CustomApiClient(this.apiKey, this.cloud);
+        this.custom = new CustomApiClient();
     }
 
 }

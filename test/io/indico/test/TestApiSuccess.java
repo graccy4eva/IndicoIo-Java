@@ -45,8 +45,8 @@ public class TestApiSuccess {
         test.createPropertiesFile("test.path");
 
         Indico check = new Indico(new File("test.path"));
-        assertTrue(check.apiKey.equals(apiKey));
-        assertTrue(check.cloud.equals(cloud));
+        assertTrue(check.API_KEY.equals(apiKey));
+        assertTrue(check.CLOUD.equals(cloud));
 
         Files.deleteIfExists(Paths.get("test.path"));
     }
