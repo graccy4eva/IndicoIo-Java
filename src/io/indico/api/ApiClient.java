@@ -32,10 +32,25 @@ public class ApiClient {
     public String baseUrl, apiKey, privateCloud;
 
     public ApiClient(String apiKey, String privateCloud) throws IndicoException {
-        this(PUBLIC_BASE_URL, apiKey, privateCloud);
+        this(apiKey, privateCloud, "https://");
     }
 
+    public ApiClient(String apiKey, String privateCloud, String protocol) throws IndicoException {
 
+	if (apiKey == null) {
+            throw new IndicoException("API key cannot be null");
+        }
+	
+	if (protocol == null) {
+	    throw new IndicoException("API protocol is null");
+	}
+	
+        this.baseUrl = privateCloud == null ?
+            PUBLIC_BASE_URL : protocol + privateCloud + ".indico.domains";
+        this.apiKey = apiKey;
+        this.privateCloud = privateCloud;
+    }
+    
     IndicoResult call(Api api, String data, Map<String, Object> extraParams)
         throws UnsupportedOperationException, IOException, IndicoException {
 
@@ -178,14 +193,4 @@ public class ApiClient {
         return result.isEmpty() ? "" : "?" + result;
     }
 
-    private ApiClient(String baseUrl, String apiKey, String privateCloud) throws IndicoException {
-        if (apiKey == null) {
-            throw new IndicoException("API key cannot be null");
-        }
-
-        this.baseUrl = privateCloud == null ?
-            baseUrl : "https://" + privateCloud + ".indico.domains";
-        this.apiKey = apiKey;
-        this.privateCloud = privateCloud;
-    }
 }
