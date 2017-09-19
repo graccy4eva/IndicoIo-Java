@@ -32,10 +32,10 @@ public class ApiClient {
     public String baseUrl, apiKey, privateCloud;
 
     public ApiClient(String apiKey, String privateCloud) throws IndicoException {
-        this(apiKey, privateCloud, "https://");
+	this(apiKey, "https://", privateCloud == null ? null : privateCloud + ".indico.domains");	
     }
 
-    public ApiClient(String apiKey, String privateCloud, String protocol) throws IndicoException {
+    public ApiClient(String apiKey, String protocol, String url) throws IndicoException {
 
 	if (apiKey == null) {
             throw new IndicoException("API key cannot be null");
@@ -45,8 +45,9 @@ public class ApiClient {
 	    throw new IndicoException("API protocol is null");
 	}
 	
-        this.baseUrl = privateCloud == null ?
-            PUBLIC_BASE_URL : protocol + privateCloud + ".indico.domains";
+
+	this.baseUrl = url == null ?
+            PUBLIC_BASE_URL : protocol + url;
         this.apiKey = apiKey;
         this.privateCloud = privateCloud;
     }
